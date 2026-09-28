@@ -90,6 +90,30 @@ app.post("/api/alarms", async (req, res) => {
     res.status(201).json(newAlarm);
 })
 
+app.put("/api/alarms/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const alarms = await readAlarms();
+    const alarm = alarms.find((a) => a.id === id);
+
+    if (!alarm) {
+        return res.status(404).json({ error: "Wekker niet gevonden." });
+    }
+
+    const error = validateAlarm(req.body);
+    if (error) {
+        return res.status(400).json({ error: error });
+    }
+
+    alarm.name = req.body.name;
+    alarm.hour = req.body.hour;
+    alarm.minute = req.body.minute;
+    alarm.enabled = req.body.enabled;
+    alarm.days = req.body.days;
+
+    await writeAlarms(alarms);
+    res.json(alarm);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
