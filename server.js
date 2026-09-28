@@ -142,6 +142,24 @@ app.patch("/api/alarms/:id/toggle", async (req, res) => {
     res.json(alarm);
 });
 
+const SNOOZE_MINUTES = 10;
+
+app.post("/api/alarms/:id/snooze", async (req, res) => {
+    const id = Number(req.params.id);
+    const alarms = await readAlarms();
+    const alarm = alarms.find((a) => a.id === id);
+
+    if (!alarm) {
+        return res.status(404).json({ error: "wekker niet gevonden." });
+    }
+
+    const totalMinutes = (alarm.hour * 60 + alarm.minute + SNOOZE_MINUTES) % (24*60);
+    const snoozeHour = Math.floor(totalMinutes / 60);
+    const snoozeMinute = totalMinutes % 60;
+
+    res.json({ id: alarm.id, name: alarm.name, hour: snoozeHour, minute: snoozeMinute });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
