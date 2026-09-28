@@ -27,6 +27,9 @@ function validateAlarm(alarm) {
         return "uur moet tussen de 0 en 23 liggen";
 
     }
+    if (!Number.isInteger(alarm.minute) || alarm.minute < 0 || alarm.minute > 59) {
+        return "minuten moeten tussen 0 en 59 liggen";
+    }
     if (typeof alarm.enabled !== "boolean") {
         return "enabled moet true of false zijn";
     }
@@ -75,7 +78,7 @@ app.post("/api/alarms", async (req, res) => {
     const newAlarm = {
         id: newId,
         name: req.body.name,
-        hour: req.body.name,
+        hour: req.body.hour,
         minute: req.body.minute,
         enabled: req.body.enabled,
         days: req.body.days,
