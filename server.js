@@ -13,9 +13,33 @@ async function readAlarms() {
   return JSON.parse(content);
 }
 
-// async function writeAlarms(alarms) {
-//   await fs.writeFile(DATA_FILE, JSON.stringify(alarms, null, 2));
-// }
+const VALID_DAYS = ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"];
+
+async function writeAlarms(alarms) {
+    await fs.writeFile(DATA_FILE, JSON.stringify(alarms, null, 2));
+}
+
+function validateAlarm(alarm) {
+    if (typeof alarm.name !== "string" || alarm.name.trim() === "") {
+        return "naam mag niet leeg zijn";
+    }
+    if (!Number.isInteger(alarm.hour) || alarm.hour < 0 || alarm.hour > 23) {
+        return "uur moet tussen de 0 en 23 liggen";
+
+    }
+    if (typeof alarm.enabled !== "boolean") {
+        return "enabled moet true of false zijn";
+    }
+    if (!Array.isArray(alarm.days) || alarm.days.length === 0) {
+        return "kies minstens 1 dag";
+    }
+    for (const day of alarm.days) {
+        if (!VALID_DAYS.includes(day)) {
+            return `invalid day: ${day}`;
+        }
+    }
+    return null;
+}
 
 app.get("/api/alarms", async (req, res) => {
   const alarms = await readAlarms();
@@ -35,6 +59,11 @@ app.get("/api/alarms/:id", async (req, res) => {
 })
 
 app.post("/api/alarms", async (req, res) => {
+    const error = validateAlarm(req.body);
+    if (error) {
+        return res.status(400).json({ error: error });
+    }
+
     const alarms = await readAlarms();
     let newId = 1;
     for (const alarm of alarms) {
