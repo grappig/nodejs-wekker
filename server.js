@@ -18,6 +18,18 @@ app.get("/api/alarms", async (req, res) => {
   res.json(alarms);
 });
 
+app.get("/api/alarms/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const alarms = await readAlarms();
+    const alarm = alarms.find((a) => a.id === id);
+
+    if (!alarm)  {
+        return res.status(404).json({ error: "Wekker niet gevonden."});
+    }
+
+    res.json(alarm);
+})
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
