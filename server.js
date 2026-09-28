@@ -49,6 +49,41 @@ app.get("/api/alarms", async (req, res) => {
   res.json(alarms);
 });
 
+const DAYS_BY_INDEX = ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"];
+
+app.get("/api/alarms/next", async (req, res) => {
+    const alarms = await readAlarms();
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    let nextAlarm = null;
+    let nextDay = null;
+    let minutesUntil = Infinity;
+
+    for (let offset = 0; offset <= 7; offset++) {
+        const day = DAYS_BY_INDEX[(now.getDay() + offset) % 7];
+
+        for (const alarm of alarms) {
+            if (!alarm.enabled || !alarm.days.includes(day)) {
+                continue;
+            }
+
+            const alarmMinutes = alarm.hour * 60 + alarm.minute;
+            const difference = offset * 24 * 60 + alarmMinutes - nowMinutes;
+
+            if (difference > 0 && difference < minutesUntil) {
+                nextAlarm = alarm;
+                nextDay = day;
+                minutesUntil = difference;
+            }
+        }
+    }
+    if (!nextAlarm) {
+        return res.status(404).json({ error: "geen actieve wekkers."});
+    }
+    res.json({ alarm: nextAlarm, day: nextDay, minutesUntil: minutesUntil});
+});
+
 app.get("/api/alarms/:id", async (req, res) => {
     const id = Number(req.params.id);
     const alarms = await readAlarms();
