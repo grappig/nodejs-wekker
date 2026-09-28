@@ -114,6 +114,20 @@ app.put("/api/alarms/:id", async (req, res) => {
     res.json(alarm);
 });
 
+app.delete("/api/alarms/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const alarms = await readAlarms();
+    const index = alarms.findIndex((a) => a.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: "wekker niet gevonden. "});
+    }
+
+    alarms.splice(index, 1);
+    await writeAlarms(alarms);
+    res.status(204).send();
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
