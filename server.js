@@ -128,6 +128,20 @@ app.delete("/api/alarms/:id", async (req, res) => {
     res.status(204).send();
 });
 
+app.patch("/api/alarms/:id/toggle", async (req, res) => {
+    const id = Number(req.params.id);
+    const alarms = await readAlarms();
+    const alarm = alarms.find((a) => a.id === id);
+
+    if (!alarm) {
+        return res.status(404).json({ error: "wekker niet gevonden." });
+    }
+
+    alarm.enabled = !alarm.enabled;
+    await writeAlarms(alarms);
+    res.json(alarm);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
