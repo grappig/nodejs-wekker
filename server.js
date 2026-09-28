@@ -13,6 +13,10 @@ async function readAlarms() {
   return JSON.parse(content);
 }
 
+// async function writeAlarms(alarms) {
+//   await fs.writeFile(DATA_FILE, JSON.stringify(alarms, null, 2));
+// }
+
 app.get("/api/alarms", async (req, res) => {
   const alarms = await readAlarms();
   res.json(alarms);
@@ -28,6 +32,30 @@ app.get("/api/alarms/:id", async (req, res) => {
     }
 
     res.json(alarm);
+})
+
+app.post("/api/alarms", async (req, res) => {
+    const alarms = await readAlarms();
+    let newId = 1;
+    for (const alarm of alarms) {
+        if (alarm.id >= newId) {
+            newId = alarm.id + 1;
+        }
+    }
+
+    const newAlarm = {
+        id: newId,
+        name: req.body.name,
+        hour: req.body.name,
+        minute: req.body.minute,
+        enabled: req.body.enabled,
+        days: req.body.days,
+
+    };
+
+    alarms.push(newAlarm);
+    await writeAlarms(alarms);
+    res.status(201).json(newAlarm);
 })
 
 app.listen(PORT, () => {
