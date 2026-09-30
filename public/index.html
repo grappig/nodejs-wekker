@@ -14,6 +14,26 @@
     <h2>Wekkers</h2>
     <ul id="alarm-list"></ul>
 
+    <h2>Wekker toevoegen</h2>
+    <form id="alarm-form">
+        <input type="text" id="name" placeholder="Naam">
+        <input type="number" id="hour" min="0" max="23" placeholder="Uur">
+        <input type="number" id="minute" min="0" max="59" placeholder="Minuut">
+
+        <div id="days">
+            <label><input type="checkbox" value="maandag"> ma</label>
+            <label><input type="checkbox" value="dinsdag"> di</label>
+            <label><input type="checkbox" value="woensdag"> wo</label>
+            <label><input type="checkbox" value="donderdag"> do</label>
+            <label><input type="checkbox" value="vrijdag"> vr</label>
+            <label><input type="checkbox" value="zaterdag"> za</label>
+            <label><input type="checkbox" value="zondag"> zo</label>
+        </div>
+
+        <label><input type="checkbox" id="enabled" checked> Actief</label>
+        <button type="submit">Toevoegen</button>
+    </form>
+
     <script src="script.js"></script>
 </body>
 </html>

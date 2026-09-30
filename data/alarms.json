@@ -5,6 +5,22 @@
     "hour": 6,
     "minute": 45,
     "enabled": true,
-    "days": ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag"]
+    "days": [
+      "maandag",
+      "dinsdag",
+      "woensdag",
+      "donderdag",
+      "vrijdag"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "test",
+    "hour": 12,
+    "minute": 5,
+    "enabled": true,
+    "days": [
+      "zaterdag"
+    ]
   }
 ]

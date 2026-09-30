@@ -31,8 +31,41 @@ async function loadAlarms() {
     }
 }
 
+async function addAlarm(event) {
+    event.preventDefault();
+
+    const days = [];
+    for (const checkbox of document.querySelectorAll("#days input:checked")) {
+        days.push(checkbox.value);
+    }
+    const alarm = {
+        name: document.getElementById("name").value,
+        hour: Number(document.getElementById("hour").value),
+        minute: Number(document.getElementById("minute").value),
+        enabled: document.getElementById("enabled").checked,
+        days: days,
+    };
+
+    const response = await fetch("/api/alarms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(alarm),
+    });
+
+    if (!response.ok) {
+        const data = await response.json();
+        showError(data.error);
+        return;
+    }
+
+    showError("");
+    event.target.reset();
+    loadAlarms();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     updateClock();
     setInterval(updateClock, 1000);
     loadAlarms();
+    document.getElementById("alarm-form").addEventListener("submit", addAlarm);
 });
