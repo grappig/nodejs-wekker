@@ -22,5 +22,16 @@
     "days": [
       "zaterdag"
     ]
+  },
+  {
+    "id": 3,
+    "name": "VICTOR BOMBAL",
+    "hour": 0,
+    "minute": 0,
+    "enabled": true,
+    "days": [
+      "maandag",
+      "zondag"
+    ]
   }
 ]

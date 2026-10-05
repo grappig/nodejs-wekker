@@ -24,6 +24,17 @@ async function loadAlarms() {
             const item = document.createElement("li");
             const status = alarm.enabled ? "aan" : "uit";
             item.textContent = `${pad(alarm.hour)}:${pad(alarm.minute)} ${alarm.name} (${alarm.days.join(", ")}) ${status}`;
+            const toggleButton = document.createElement("button");
+            toggleButton.textContent = alarm.enabled ? "uitzetten" : "aanzetten";
+            toggleButton.addEventListener("click", async () => {
+                const response = await fetch(`/api/alarms/${alarm.id}/toggle`, { method: "PATCH" });
+                if (response.ok) {
+                    loadAlarms();
+                } else {
+                    showError("Kon de wekker niet aanpassen.");
+                }
+            });
+            item.appendChild(toggleButton);
             list.appendChild(item);
         }
     } catch(error) {
