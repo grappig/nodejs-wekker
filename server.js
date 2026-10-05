@@ -189,7 +189,12 @@ app.post("/api/alarms/:id/snooze", async (req, res) => {
         return res.status(404).json({ error: "wekker niet gevonden." });
     }
 
-    const totalMinutes = (alarm.hour * 60 + alarm.minute + SNOOZE_MINUTES) % (24*60);
+    const snoozeMinutes = req.body.minutes ?? SNOOZE_MINUTES;
+    if (![5, 10, 15].includes(snoozeMinutes)) {
+        return res.status(400).json({ error: "kies 5, 10 of 15 minuten"});
+    }
+
+    const totalMinutes = (alarm.hour * 60 + alarm.minute + snoozeMinutes) % (24*60);
     const snoozeHour = Math.floor(totalMinutes / 60);
     const snoozeMinute = totalMinutes % 60;
 
