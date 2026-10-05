@@ -1,16 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "Opstaan voor school",
-    "hour": 6,
-    "minute": 45,
-    "enabled": true,
-    "days": [
-      "maandag",
-      "dinsdag",
-      "woensdag",
-      "donderdag",
-      "vrijdag"
-    ]
-  }
-]
+[]

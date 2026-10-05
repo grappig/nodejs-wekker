@@ -52,9 +52,23 @@ async function loadAlarms() {
             item.appendChild(editButton);
             list.appendChild(item);
         }
+        loadNextAlarm();
     } catch(error) {
         showError("Kon de wekkers niet laden.");
     }
+}
+
+async function loadNextAlarm() {
+    const response = await fetch("/api/alarms/next");
+    const next = document.getElementById("next-alarm");
+
+    if (!response.ok) {
+        next.textContent = "Geen actieve wekkers gevonden";
+        return;
+    }
+
+    const data = await response.json();
+    next.textContent = `volgende wekker: ${data.alarm.name} om ${pad(data.alarm.hour)}:${pad(data.alarm.minute)} (${data.day})`;
 }
 
 function startEditing(alarm) {
