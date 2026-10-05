@@ -35,6 +35,17 @@ async function loadAlarms() {
                 }
             });
             item.appendChild(toggleButton);
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "verwijderen";
+            deleteButton.addEventListener("click", async () => {
+                const response = await fetch(`/api/alarms/${alarm.id}`, { method: "DELETE"});
+                if (response.ok) {
+                    loadAlarms();
+                } else {
+                    showError("wekker kon niet worden verwijderd.");
+                }
+            });
+            item.appendChild(deleteButton);
             list.appendChild(item);
         }
     } catch(error) {
