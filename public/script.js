@@ -46,11 +46,29 @@ async function loadAlarms() {
                 }
             });
             item.appendChild(deleteButton);
+            const editButton = document.createElement("button");
+            editButton.textContent = "wijzigen";
+            editButton.addEventListener("click", () => startEditing(alarm));
+            item.appendChild(editButton);
             list.appendChild(item);
         }
     } catch(error) {
         showError("Kon de wekkers niet laden.");
     }
+}
+
+function startEditing(alarm) {
+    document.getElementById("name").value = alarm.name;
+    document.getElementById("hour").value = alarm.hour;
+    document.getElementById("minute").value = alarm.minute;
+    document.getElementById("enabled").checked = alarm.enabled;
+    for (const checkbox of document.querySelectorAll("#days input")) {
+        checkbox.checked = alarm.days.includes(checkbox.value);
+    }
+
+    const form = document.getElementById("alarm-form");
+    form.dataset.id = alarm.id;
+    form.querySelector("button[type='submit']").textContent = "Opslaan";
 }
 
 async function addAlarm(event) {
@@ -68,8 +86,9 @@ async function addAlarm(event) {
         days: days,
     };
 
-    const response = await fetch("/api/alarms", {
-        method: "POST",
+    const id = event.target.dataset.id;
+    const response = await fetch(id ? `/api/alarms/${id}` : "/api/alarms", {
+        method: id ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(alarm),
     });
@@ -81,6 +100,8 @@ async function addAlarm(event) {
     }
 
     showError("");
+    delete event.target.dataset.id;
+    event.target.querySelector("button[type='submit']").textContent = "Toevoegen";
     event.target.reset();
     loadAlarms();
 }
