@@ -2,6 +2,8 @@ function pad(number) {
     return String(number).padStart(2, "0");
 }
 
+let countdownInterval;
+
 function updateClock() {
     const now = new Date();
     const clock = document.getElementById("clock");
@@ -69,7 +71,24 @@ async function loadNextAlarm() {
 
     const data = await response.json();
     next.textContent = `volgende wekker: ${data.alarm.name} om ${pad(data.alarm.hour)}:${pad(data.alarm.minute)} (${data.day})`;
-}
+    clearInterval(countdownInterval);
+    let secondsLeft = data.secondsUntil;
+    const countdown = document.getElementById("countdown");
+    function updateCountdown() {
+        if (secondsLeft <= 0) {
+            clearInterval(countdownInterval);
+            loadNextAlarm();
+            return;
+        }
+        const hours = Math.floor(secondsLeft / 3600);
+        const minutes = Math.floor((secondsLeft % 3600) / 60);
+        const seconds = secondsLeft % 60;
+        countdown.textContent = `tijd tot de volgende wekker: ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        secondsLeft--;
+    }
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000);
+    }
 
 function startEditing(alarm) {
     document.getElementById("name").value = alarm.name;

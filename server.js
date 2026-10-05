@@ -81,7 +81,8 @@ app.get("/api/alarms/next", async (req, res) => {
     if (!nextAlarm) {
         return res.status(404).json({ error: "geen actieve wekkers."});
     }
-    res.json({ alarm: nextAlarm, day: nextDay, minutesUntil: minutesUntil});
+    const secondsUntil = minutesUntil * 60 - now.getSeconds();
+    res.json({ alarm: nextAlarm, day: nextDay, minutesUntil: minutesUntil, secondsUntil: secondsUntil});
 });
 
 app.get("/api/alarms/:id", async (req, res) => {

@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "School",
+    "hour": 7,
+    "minute": 0,
+    "enabled": true,
+    "days": [
+      "maandag",
+      "dinsdag",
+      "woensdag",
+      "donderdag",
+      "vrijdag"
+    ]
+  }
+]
