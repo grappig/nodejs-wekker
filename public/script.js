@@ -52,6 +52,36 @@ async function loadAlarms() {
             editButton.textContent = "wijzigen";
             editButton.addEventListener("click", () => startEditing(alarm));
             item.appendChild(editButton);
+
+            const snoozeSelect = document.createElement("select");
+            snoozeSelect.innerHTML = `
+                <option value="5">5 min</option>
+                <option value="10" selected>10 min</option>
+                <option value="15">15 min</option>
+            `;
+
+            const snoozeButton = document.createElement("button");
+            snoozeButton.textContent = "snooze";
+            snoozeButton.addEventListener("click", async () => {
+                const minutes = Number(snoozeSelect.value);
+                const response = await fetch(`/api/alarms/${alarm.id}/snooze`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ minutes })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    showError(data.error || "Snooze kon niet worden uitgevoerd.");
+                    return;
+                }
+
+                showError("");
+                loadAlarms();
+            });
+
+            item.appendChild(snoozeSelect);
+            item.appendChild(snoozeButton);
             list.appendChild(item);
         }
         loadNextAlarm();
