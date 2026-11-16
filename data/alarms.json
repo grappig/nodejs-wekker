@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "test",
-    "hour": 9,
-    "minute": 53,
+    "hour": 10,
+    "minute": 3,
     "enabled": true,
     "days": [
       "maandag",

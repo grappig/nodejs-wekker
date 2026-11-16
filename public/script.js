@@ -44,7 +44,7 @@ async function loadAlarms() {
                 if (response.ok) {
                     loadAlarms();
                 } else {
-                    showError("wekker kon niet worden verwijderd.");
+                    showError("Wekker kon niet worden verwijderd.");
                 }
             });
             item.appendChild(deleteButton);
@@ -72,7 +72,7 @@ async function loadAlarms() {
 
                 if (!response.ok) {
                     const data = await response.json();
-                    showError(data.error || "Snooze kon niet worden uitgevoerd.");
+                    showError(data.error || "kon niet snoozen.");
                     return;
                 }
 

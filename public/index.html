@@ -1,41 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>wekker api</title>
+    <title>Wekker API</title>
 </head>
 <body>
-    <p id="clock">--:--:--</p>
+    <main class="app">
+        <header class="topbar">
+            <h1 id="clock">--:--:--</h1>
+        </header>
 
-    <p id="next-alarm">Volgende wekker wordt geladen...</p>
-    <p id="countdown"></p>
+        <section class="card">
+            <p id="next-alarm">Wekker wordt geladen...</p>
+            <p id="countdown" class="countdown"></p>
+        </section>
 
-    <p id="error"></p>
+        <p id="error" class="error"></p>
 
-    <h2>Wekkers</h2>
-    <ul id="alarm-list"></ul>
+        <section class="card">
+            <h2>Wekkers</h2>
+            <ul id="alarm-list" class="alarm-list"></ul>
+        </section>
 
-    <h2>Wekker toevoegen</h2>
-    <form id="alarm-form">
-        <input type="text" id="name" placeholder="Naam">
-        <input type="number" id="hour" min="0" max="23" placeholder="Uur">
-        <input type="number" id="minute" min="0" max="59" placeholder="Minuut">
+        <section class="card">
+            <h2>Nieuwe wekker</h2>
+            <form id="alarm-form" class="alarm-form">
+                <input type="text" id="name" placeholder="Naam">
+                <input type="number" id="hour" min="0" max="23" placeholder="Uur">
+                <input type="number" id="minute" min="0" max="59" placeholder="Minuut">
 
-        <div id="days">
-            <label><input type="checkbox" value="maandag"> ma</label>
-            <label><input type="checkbox" value="dinsdag"> di</label>
-            <label><input type="checkbox" value="woensdag"> wo</label>
-            <label><input type="checkbox" value="donderdag"> do</label>
-            <label><input type="checkbox" value="vrijdag"> vr</label>
-            <label><input type="checkbox" value="zaterdag"> za</label>
-            <label><input type="checkbox" value="zondag"> zo</label>
-        </div>
+                <div id="days" class="days">
+                    <label><input type="checkbox" value="maandag"> ma</label>
+                    <label><input type="checkbox" value="dinsdag"> di</label>
+                    <label><input type="checkbox" value="woensdag"> wo</label>
+                    <label><input type="checkbox" value="donderdag"> do</label>
+                    <label><input type="checkbox" value="vrijdag"> vr</label>
+                    <label><input type="checkbox" value="zaterdag"> za</label>
+                    <label><input type="checkbox" value="zondag"> zo</label>
+                </div>
 
-        <label><input type="checkbox" id="enabled" checked> Actief</label>
-        <button type="submit">Toevoegen</button>
-    </form>
+                <label class="checkbox-row"><input type="checkbox" id="enabled" checked> Actief</label>
+                <button type="submit">Toevoegen</button>
+            </form>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
